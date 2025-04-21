@@ -1,0 +1,148 @@
+.stocks-container {
+    font-family: Arial, sans-serif;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .refresh-btn, .export-btn {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+  }
+  
+  .refresh-btn {
+    background-color: #2c7be5;
+    color: white;
+  }
+  
+  .export-btn {
+    background-color: #1d6f42;
+    color: white;
+  }
+  
+  .table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .transaction-table {
+    display: grid;
+    grid-template-columns: 
+      minmax(120px, 1fr)    /* date-col */
+      minmax(180px, 1.5fr)  /* name-col */
+      minmax(120px, 1fr)    /* type-col */
+      minmax(90px, 1fr)     /* price-col */
+      minmax(90px, 1fr)     /* shares-col */
+      minmax(100px, 1fr)    /* balance-col */
+      minmax(90px, 1fr)     /* payout-col */
+      minmax(120px, 1fr)    /* brokerage-col */
+      minmax(100px, 1fr)    /* amount-col */
+      minmax(100px, 1fr);   /* value-col */
+    width: 100%;
+  }
+  
+  .table-header, .table-row {
+    display: contents;
+  }
+  
+  .header-cell {
+    background-color: #f5f5f5;
+    padding: 12px 15px;
+    font-weight: bold;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .header-cell:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .table-cell {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .demat-account {
+    font-size: 0.8em;
+    color: #666;
+    margin-top: 4px;
+  }
+  
+  /* Column-specific widths */
+  .date-col { grid-column: 1; }
+  .name-col { grid-column: 2; text-align: left; padding-left: 20px; }
+  .type-col { grid-column: 3; }
+  .price-col { grid-column: 4; }
+  .shares-col { grid-column: 5; }
+  .balance-col { grid-column: 6; }
+  .payout-col { grid-column: 7; }
+  .brokerage-col { grid-column: 8; }
+  .amount-col { grid-column: 9; }
+  .value-col { grid-column: 10; }
+  
+  .debit {
+    color: #ff0000;
+    font-weight: bold;
+  }
+  
+  .credit {
+    color: #008000;
+    font-weight: bold;
+  }
+  
+  .table-footer {
+    background-color: #f9f9f9;
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  @media (max-width: 768px) {
+    .header-section {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .action-buttons {
+      width: 100%;
+      justify-content: flex-end;
+      margin-top: 10px;
+    }
+    
+    .transaction-table {
+      display: block;
+    }
+  }

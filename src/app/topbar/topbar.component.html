@@ -1,0 +1,93 @@
+<div class="top-bar">
+  <!-- Portfolio Dropdown -->
+  <div class="left">
+    <select class="portfolio-dropdown">
+      <option>My Portfolio 1</option>
+      <option>My Portfolio 2</option>
+    </select>
+  </div>
+
+  <!-- Right Side Buttons -->
+  <div class="right">
+    <!-- Add Investment Dropdown -->
+    <div class="dropdown-container" [class.active]="activeDropdown === 'investment'">
+      <button class="dropdown-toggle" (click)="toggleDropdown('investment')">
+        Add Investment
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Add Stock Manually</a></li>
+        <li><a href="#">Add Bond Manually</a></li>
+      </ul>
+    </div>
+
+    <!-- 3-Dot Dropdown -->
+    <div class="dropdown-container" [class.active]="activeDropdown === 'options'">
+      <button class="dropdown-toggle" (click)="toggleDropdown('options')">
+        ⋮
+      </button>
+      <ul class="dropdown-menu">
+        <li><a href="#">Rename</a></li>
+        <li><a href="#">Delete</a></li>
+      </ul>
+    </div>
+  </div>
+
+  
+</div>
+<!-- Container -->
+<div class="metrics-bar">
+  <!-- Current Value -->
+  <div class="metrics-section">
+    <div class="label">CURRENT VALUE</div>
+    <div class="value">₹4.34 <span class="unit">Lakh</span></div>
+    <div class="subtext">₹1.76 Lakh Invested</div>
+  </div>
+
+  <!-- 1 Day Change with Dropdown -->
+  <div class="metrics-section relative">
+    <div class="label-row" onclick="toggleDropdown()">
+      <span class="label blue">1 DAY</span>
+      <span class="dropdown-icon">▾</span>
+    </div>
+    <div class="value green">₹+4,386 <span class="percent">1.02%</span></div>
+
+    <!-- Dropdown Menu -->
+    <ul id="duration-dropdown" class="dropdown-menu">
+      <li><span>CUSTOM 🔒</span></li>
+      <li>1 DAY</li>
+      <li>1 MONTH</li>
+      <li>3 MONTHS</li>
+      <li>6 MONTHS</li>
+      <li>1 YEAR</li>
+      <li>3 YEARS</li>
+      <li>5 YEARS</li>
+      <li>7 YEARS</li>
+      <li>10 YEARS</li>
+      <li>ALL TIME</li>
+    </ul>
+  </div>
+
+  <!-- All-Time Returns -->
+  <div class="metrics-section">
+    <div class="label">ALL-TIME RETURNS</div>
+    <div class="value green">₹+2.78 <span class="unit">Lakh</span> <span class="rate">11.9% p.a.</span></div>
+  </div>
+</div>
+
+
+<script>
+  function toggleDropdown() {
+    const dropdown = document.getElementById("duration-dropdown");
+    dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+  }
+
+  // Optional: hide dropdown on click outside
+  document.addEventListener("click", function (event) {
+    const dropdown = document.getElementById("duration-dropdown");
+    const toggle = document.querySelector(".label-row");
+    if (!toggle.contains(event.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+</script>
+

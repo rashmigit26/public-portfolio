@@ -1,0 +1,64 @@
+<div class="investment-dashboard">
+    <!-- Portfolio Header -->
+    <div class="portfolio-header">
+        <div class="portfolio-selector" (click)="toggleDropdown($event)" #dropdownTrigger>
+            <h1>{{ selectedPortfolio.name }}</h1>
+            <span class="dropdown-icon" [class.rotated]="isDropdownOpen">
+              <svg width="24" height="24" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+              </svg>
+            </span>
+            
+            <div class="portfolio-dropdown" *ngIf="isDropdownOpen">
+              <div class="portfolio-option" 
+                   *ngFor="let portfolio of portfolios"
+                   (click)="selectPortfolio(portfolio)">
+                {{ portfolio.name }}
+              </div>
+            </div>
+          </div>
+      <div class="header-actions">
+        <button class="add-button">
+          Add Investments
+        </button>
+        <div class="dropdown-menu">
+          <i class="fas fa-ellipsis-v"></i>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Top Metrics Row -->
+    <div class="metrics-row">
+      <div class="current-value-section">
+        <div class="section-title">CURRENT VALUE</div>
+        <div class="main-value">₹4.34 Lakh</div>
+        <div class="sub-value">₹1.76 Lakh Invested</div>
+      </div>
+  
+      <div class="time-period-section">
+        <select class="period-selector">
+          <option>1 Month</option>
+          <option>1 Week</option>
+          <option>1 Year</option>
+        </select>
+        <div class="return-value">₹+1,733 <span>4.8% p.a.</span></div>
+      </div>
+  
+      <div class="all-time-section">
+        <div class="section-title">ALL-TIME RETURNS</div>
+        <div class="return-value">₹+2.78 Lakh <span>11.9% p.a.</span></div>
+      </div>
+    </div>
+  
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+      <div class="nav-tab">Dashboard</div>
+      <div class="nav-tab">Overview</div>
+      <div class="nav-tab">Performance</div>
+      <div class="nav-tab">Analysis</div>
+      <div class="nav-tab">Tax Report</div>
+      <div class="nav-tab">Transactions</div>
+      <div class="nav-tab">Alerts</div>
+      <div class="nav-tab">Add Investments</div>
+    </div>
+  </div>

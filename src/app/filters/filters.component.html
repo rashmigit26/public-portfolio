@@ -1,0 +1,49 @@
+
+      <div class="filter-container">
+      <div class="nav-tabs">
+        <div class="nav-tab" 
+             >
+        Mutual Funds
+        </div>
+        <div class="nav-tab" 
+             >
+          Stocks
+        </div>
+      </div>
+    
+      <!-- Filters -->
+       <div class="filters">
+      <div class="filter-group">
+        <label>DURATION</label>
+        <input type="date"  name="fromDate">
+        <span>to</span>
+        <input type="date"  name="toDate">
+      </div>
+      
+      <div class="filter-group">
+        <label>Transaction Type</label>
+        <select  name="transactionType">
+          <option value="all">All</option>
+          <option value="buy">Buy</option>
+          <option value="sell">Sell</option>
+          <option value="dividend">Dividend</option>
+          <option value="transfer">Transfer</option>
+        </select>
+      </div>
+      
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text"  placeholder="Search Investment..." name="searchTerm">
+      </div>
+      </div>
+  
+      <div id="mutual-funds-section" class="table-section">
+        
+        <app-transaction></app-transaction>
+      </div>
+      
+        <div id="stocks-section" class="table-section">
+       
+        <app-stocks></app-stocks>
+       </div>
+    </div>

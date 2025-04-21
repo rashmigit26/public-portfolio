@@ -1,0 +1,58 @@
+<div class="stocks-container">
+    <div class="header-section">
+      <h1>Stocks</h1>
+      <div class="action-buttons">
+        <button class="refresh-btn" (click)="refreshTransactions()">
+          <i class="fas fa-sync-alt"></i> Update
+        </button>
+        <button class="export-btn" (click)="exportToExcel()">
+          <i class="fas fa-file-excel"></i> Export Excel
+        </button>
+      </div>
+    </div>
+  
+    <div class="table-wrapper">
+      <div class="transaction-table">
+        <div class="table-header">
+          <div class="header-cell date-col" (click)="sort('date')">Transaction Date {{getSortIcon('date')}}</div>
+          <div class="header-cell name-col" (click)="sort('companyName')">Company Name {{getSortIcon('companyName')}}</div>
+          <div class="header-cell type-col" (click)="sort('type')">Transaction Type {{getSortIcon('type')}}</div>
+          <div class="header-cell price-col" (click)="sort('price')">Price {{getSortIcon('price')}}</div>
+          <div class="header-cell shares-col" (click)="sort('shares')">Shares {{getSortIcon('shares')}}</div>
+          <div class="header-cell balance-col" (click)="sort('balanceShares')">Balance Shares {{getSortIcon('balanceShares')}}</div>
+          <div class="header-cell payout-col">Cash Payout</div>
+          <div class="header-cell brokerage-col" (click)="sort('brokerage')">Brokerage PER SHARE {{getSortIcon('brokerage')}}</div>
+          <div class="header-cell amount-col" (click)="sort('amount')">Amount {{getSortIcon('amount')}}</div>
+          <div class="header-cell value-col" (click)="sort('marketValue')">Market Value {{getSortIcon('marketValue')}}</div>
+        </div>
+  
+        <div class="table-row" *ngFor="let transaction of transactions">
+          <div class="table-cell date-col">{{transaction.date}}</div>
+          <div class="table-cell name-col">
+            <div>{{transaction.companyName}}</div>
+            <!-- <div class="demat-account">{{transaction.dematAccount}}</div> -->
+          </div>
+          <div class="table-cell type-col">{{transaction.type}}</div>
+          <div class="table-cell price-col">{{transaction.price | currency:'INR':'symbol':'1.2-2'}}</div>
+          <div class="table-cell shares-col">
+            <span [ngClass]="{'credit': transaction.shares > 0, 'debit': transaction.shares < 0}">
+              {{transaction.shares | number:'1.0-0'}}
+            </span>
+          </div>
+          <div class="table-cell balance-col">{{transaction.balanceShares | number:'1.0-0'}}</div>
+          <div class="table-cell payout-col">--</div>
+          <div class="table-cell brokerage-col debit">{{transaction.brokerage | currency:'INR':'symbol':'1.2-2'}}</div>
+          <div class="table-cell amount-col">
+            <span [ngClass]="{'credit': transaction.amount > 0, 'debit': transaction.amount < 0}">
+              {{transaction.amount | currency:'INR':'symbol':'1.2-2'}}
+            </span>
+          </div>
+          <div class="table-cell value-col">{{transaction.marketValue | currency:'INR':'symbol':'1.0-0'}}</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="table-footer">
+      <div class="footer-note">All numbers are in Indian Rupee (₹)</div>
+    </div>
+  </div>
