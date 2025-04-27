@@ -47,3 +47,34 @@
         <app-stocks></app-stocks>
        </div>
     </div>
+<!-- stcoks table -->
+
+<div class="stocks-container">
+  <h2>Stock Transactions</h2>
+
+  <div class="table-wrapper">
+    <div class="table">
+      <div class="table-header">
+        <div>Transaction Date</div>
+        <div>Company Name</div>
+        <div>Type</div>
+        <div>Price</div>
+        <div>Shares</div>
+        <div>Brokerage</div>
+        <div>Amount</div>
+        <div>Market Value</div>
+      </div>
+
+      <div class="table-row" *ngFor="let stock of stockTransactions">
+        <div>{{ stock.date }}</div>
+        <div>{{ stock.companyName }}</div>
+        <div>{{ stock.type }}</div>
+        <div>{{ stock.price | currency:'INR' }}</div>
+        <div>{{ stock.shares }}</div>
+        <div>{{ stock.brokerage | currency:'INR' }}</div>
+        <div>{{ stock.amount | currency:'INR' }}</div>
+        <div>{{ stock.marketValue | currency:'INR' }}</div>
+      </div>
+    </div>
+  </div>
+</div>

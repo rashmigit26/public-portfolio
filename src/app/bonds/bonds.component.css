@@ -1,0 +1,78 @@
+.bonds-container {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .bonds-container h2 {
+    color: #333;
+    margin: 0;
+  }
+  
+  .bonds-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  
+  .bonds-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #dee2e6;
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .bonds-table th:hover {
+    background-color: #e9ecef;
+  }
+  
+  .bonds-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+  }
+  
+  .bonds-table tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .amount {
+    font-weight: 600;
+    color: #2a6496;
+  }
+  
+  .footer-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+  }
+  
+  .export-btn {
+    padding: 8px 16px;
+    background-color: #2a9647;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .export-btn:hover {
+    background-color: #1d752a;
+  }

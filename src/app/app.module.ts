@@ -10,6 +10,8 @@ import { StocksComponent } from './stocks/stocks.component';
 import { FiltersComponent } from './filters/filters.component';
 import { FormsModule } from '@angular/forms';
 import { DashComponent } from './dash/dash.component';
+import { BondsComponent } from './bonds/bonds.component';
+import { Onein3Component } from './onein3/onein3.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { DashComponent } from './dash/dash.component';
     TransactionComponent,
     StocksComponent,
     FiltersComponent,
-    DashComponent
+    DashComponent,
+    BondsComponent,
+    Onein3Component
   ],
   imports: [
     BrowserModule,

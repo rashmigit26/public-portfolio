@@ -1,0 +1,57 @@
+<div class="bonds-container">
+    <div class="table-header">
+      <h2>BONDS</h2>
+      <button class="export-btn" (click)="exportToExcel()">
+        Export to Excel
+      </button>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="bonds-table">
+        <thead>
+          <tr>
+            <th (click)="sort('date')">Transaction Date 
+              <span *ngIf="sortColumn === 'date'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('name')">Bond Name / ISIN
+              <span *ngIf="sortColumn === 'name'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('type')">Transaction Type
+              <span *ngIf="sortColumn === 'type'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('couponRate')">Coupon Rate
+              <span *ngIf="sortColumn === 'couponRate'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('quantity')">Quantity
+              <span *ngIf="sortColumn === 'quantity'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('faceValue')">Face Value
+              <span *ngIf="sortColumn === 'faceValue'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('amount')">Amount
+              <span *ngIf="sortColumn === 'amount'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+            <th (click)="sort('currentValue')">Current Value
+              <span *ngIf="sortColumn === 'currentValue'">{{ sortDirection === 'asc' ? '↑' : '↓' }}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bond of sortedBonds">
+            <td>{{ bond.date }}</td>
+            <td>{{ bond.name }} / {{ bond.isin }}</td>
+            <td>{{ bond.type }}</td>
+            <td>{{ bond.couponRate }}%</td>
+            <td>{{ bond.quantity | number }}</td>
+            <td>₹{{ bond.faceValue | number }}</td>
+            <td class="amount">₹{{ bond.amount | number:'1.2-2' }}</td>
+            <td>₹{{ bond.currentValue | number }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="footer-note">
+      All numbers are in Indian Rupee (₹)
+    </div>
+  </div>
