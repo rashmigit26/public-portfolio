@@ -364,3 +364,93 @@ applyFilters(): void {
 }
 }
 
+
+12.40 
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
+
+// ... (keep your existing interfaces)
+
+@Component({
+  selector: 'app-onein3',
+  templateUrl: './onein3.component.html',
+  styleUrls: ['./onein3.component.css']
+})
+export class Onein3Component implements OnInit {
+  // Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalItems: number = 0;
+  
+  // ... (keep your other properties)
+
+  ngOnInit(): void {
+    this.applyFilters();
+  }
+
+  // Modified filtered data getters
+  get filteredStocks(): StockTransaction[] {
+    const filteredData = this.applyFiltersToData([...this.stocksData], ['symbol', 'type', 'exchange']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  }
+
+  get filteredBonds(): BondTransaction[] {
+    const filteredData = this.applyFiltersToData([...this.bondsData], ['name', 'isin', 'type']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  }
+
+  get filteredMutualFunds(): MutualFundTransaction[] {
+    const filteredData = this.applyFiltersToData([...this.mutualFundsData], ['scheme', 'folio', 'type']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  }
+
+  private updatePagination(filteredCount: number): void {
+    this.totalItems = filteredCount;
+    // Reset to first page if current page is invalid
+    if (this.currentPage > this.totalPages() && this.currentPage > 1) {
+      this.currentPage = 1;
+    }
+  }
+
+  private paginateData<T>(data: T[]): T[] {
+    return data.slice(
+      (this.currentPage - 1) * this.itemsPerPage,
+      this.currentPage * this.itemsPerPage
+    );
+  }
+
+  // Pagination methods
+  goToPage(page: number): void {
+    const totalPages = this.totalPages();
+    // Ensure page is within valid range
+    page = Math.max(1, Math.min(page, totalPages));
+    
+    if (page !== this.currentPage) {
+      this.currentPage = page;
+      this.applyFilters();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
+  }
+
+  // Tab change handler
+  switchTab(tabId: string): void {
+    this.activeTab = tabId;
+    this.currentPage = 1; // Reset to first page when switching tabs
+    this.applyFilters();
+  }
+
+  applyFilters(): void {
+    // This forces Angular to recompute the filtered data
+    // The getters will handle the pagination
+  }
+
+  // ... (keep your other existing methods)
+}
+
