@@ -1,1 +1,78 @@
+currentPage: number = 1;
+itemsPerPage: number = 5;
+totalItems: number = 0;
+
+get filteredStocks(): StockTransaction[] {
+  const filteredData = this.applyFiltersToData([...this.stocksData], ['symbol', 'type']);
+  this.totalItems = filteredData.length; // Update total items count
+  return filteredData.slice(
+    (this.currentPage - 1) * this.itemsPerPage, // Calculate start index
+    this.currentPage * this.itemsPerPage // Calculate end index
+  );
+}
+
+<div class="pagination">
+  <button (click)="goToPage(1)" [disabled]="currentPage === 1">First</button>
+  <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+  <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+  <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages()">Next</button>
+  <button (click)="goToPage(totalPages())" [disabled]="currentPage === totalPages()">Last</button>
+</div>
+
+goToPage(page: number): void {
+  if (page >= 1 && page <= this.totalPages()) {
+    this.currentPage = page;
+    this.applyFilters(); // Reapply filters to update the table based on the new page
+  }
+}
+
+totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage); // Calculate the total number of pages
+}
+
+// Variables for pagination
+currentPage: number = 1;
+itemsPerPage: number = 5;
+totalItems: number = 0;
+
+get filteredStocks(): StockTransaction[] {
+  const filteredData = this.applyFiltersToData([...this.stocksData], ['symbol', 'type']);
+  this.totalItems = filteredData.length;
+  return filteredData.slice(
+    (this.currentPage - 1) * this.itemsPerPage,
+    this.currentPage * this.itemsPerPage
+  );
+}
+
+// Similar for filteredBonds and filteredMutualFunds...
+
+goToPage(page: number): void {
+  if (page >= 1 && page <= this.totalPages()) {
+    this.currentPage = page;
+    this.applyFilters();
+  }
+}
+
+totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
+
+applyFilters() {
+  // Ensure the table updates based on the current page and other filters
+  this.filteredStocks; // This will trigger pagination as well
+  this.filteredBonds;
+  this.filteredMutualFunds;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pagination button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
