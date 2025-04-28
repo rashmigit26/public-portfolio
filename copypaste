@@ -454,3 +454,525 @@ export class Onein3Component implements OnInit {
   // ... (keep your other existing methods)
 }
 
+................................................................................
+<!-- onein3.component.html -->
+<div class="container">
+  <!-- Header Section -->
+  <div class="header">
+    <h2>Investment Transactions</h2>
+    <div class="divider"></div>
+  </div>
+
+  <!-- Filters Card -->
+  <div class="card filters-card">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>From Date</label>
+        <input type="date" [(ngModel)]="fromDate" class="form-input">
+      </div>
+      <div class="filter-group">
+        <label>To Date</label>
+        <input type="date" [(ngModel)]="toDate" class="form-input">
+      </div>
+      <div class="filter-group">
+        <label>Transaction Type</label>
+        <select [(ngModel)]="selectedType" class="form-input">
+          <option value="all">All Types</option>
+          <option value="buy">Buy</option>
+          <option value="sell">Sell</option>
+          <option value="dividend">Dividend</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-row">
+      <div class="search-group">
+        <input type="text" [(ngModel)]="searchQuery" placeholder="Search transactions..." class="search-input">
+        <button (click)="applyFilters()" class="search-button">
+          <i class="fas fa-search"></i> Search
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-container">
+    <button *ngFor="let tab of tabs" 
+            [class.active]="activeTab === tab.id"
+            (click)="activeTab = tab.id"
+            class="tab-button">
+      {{ tab.label }}
+    </button>
+  </div>
+
+  <!-- Tables Section -->
+  <div class="table-container">
+    <!-- Stocks Table -->
+    <div *ngIf="activeTab === 'stocks'" class="table-card">
+      <div class="table-header">
+      <h3 class="table-title">STOCKS TRANSACTIONS</h3>
+      <button class="export-btn" (click)="exportStocksToExcel()" >
+        <i class="fas fa-download"></i> Export Excel
+      </button>
+    </div>
+      <div class="table-wrapper">
+        <table class="transaction-table">
+          <!-- Table headers and rows -->
+          <thead>
+            <tr>
+              <th (click)="sort('date')">Date {{ getSortSymbol('date') }}</th>
+              <th (click)="sort('time')">Time {{ getSortSymbol('time') }}</th>
+              <th (click)="sort('symbol')">Symbol {{ getSortSymbol('symbol') }}</th>
+              <th (click)="sort('exchange')">Exchange {{ getSortSymbol('exchange') }}</th>
+              <th (click)="sort('type')">Type {{ getSortSymbol('type') }}</th>
+              <th (click)="sort('quantity')">Qty {{ getSortSymbol('quantity') }}</th>
+              <th (click)="sort('price')">Price {{ getSortSymbol('price') }}</th>
+              <th (click)="sort('amount')">Amount {{ getSortSymbol('amount') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of filteredStocks">
+              <td>{{ transaction.date | date:'dd-MMM-yyyy' }}</td>
+              <td>{{ transaction.time  }}</td>
+              <td>{{ transaction.symbol }}</td>
+              <td>{{ transaction.exchange }}</td>
+              <td>{{ transaction.type }}</td>
+              <td>{{ transaction.quantity }}</td>
+              <td>₹{{ transaction.price | number:'1.2-2' }}</td>
+              <td class="amount">₹{{ transaction.amount | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Bonds Table -->
+    <div *ngIf="activeTab === 'bonds'" class="table-card">
+      <div class="table-header">
+      <h3 class="table-title">BONDS TRANSACTIONS</h3>
+      <button class="export-btn" (click)="exportStocksToExcel()" >
+        <i class="fas fa-download"></i> Export Excel
+      </button>
+    </div>
+      <div class="table-wrapper">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th (click)="sort('date')">Date {{ getSortSymbol('date') }}</th>
+              <th (click)="sort('name')">Bond Name {{ getSortSymbol('name') }}</th>
+              <th (click)="sort('type')">Type {{ getSortSymbol('type') }}</th>
+              <th (click)="sort('price')">Price {{ getSortSymbol('price') }} </th>
+              <th (click)="sort('price')">Units {{ getSortSymbol('units') }} </th>
+              <th (click)="sort('couponRate')">Interest Rate {{ getSortSymbol('InterestRate') }}</th>
+              <!-- <th (click)="sort('quantity')">Qty {{ getSortSymbol('quantity') }}</th> -->
+              <th (click)="sort('amount')">Amount {{ getSortSymbol('amount') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of filteredBonds">
+              <td>{{ transaction.date | date:'dd-MMM-yyyy' }}</td>
+              <td>{{ transaction.name }}</td>
+              <td>{{ transaction.type }}</td>
+              <td>{{ transaction.price }}</td>
+              <td>{{ transaction.units }}</td>
+              <td>{{ transaction.InterestRate }}%</td>
+              <!-- <td>{{ transaction.quantity }}</td> -->
+              <td class="amount">₹{{ transaction.amount | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mutual Funds Table -->
+    <div *ngIf="activeTab === 'mutual-funds'" class="table-card">
+      <div class="table-header">
+      <h3 class="table-title">MUTUAL FUNDS TRANSACTIONS</h3>
+      <button class="export-btn" (click)="exportStocksToExcel()" >
+        <i class="fas fa-download"></i> Export Excel
+      </button>
+      </div>
+      <div class="table-wrapper">
+        <table class="transaction-table">
+          <thead>
+            <tr>
+              <th (click)="sort('date')">Date {{ getSortSymbol('date') }}</th>
+              <th (click)="sort('scheme')">Scheme {{ getSortSymbol('scheme') }}</th>
+              <th (click)="sort('type')">Type {{ getSortSymbol('type') }}</th>
+              <th (click)="sort('units')">Units {{ getSortSymbol('units') }}</th>
+              <th (click)="sort('nav')">NAV {{ getSortSymbol('nav') }}</th>
+              <th (click)="sort('amount')">Amount {{ getSortSymbol('amount') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let transaction of filteredMutualFunds">
+              <td>{{ transaction.date | date:'dd-MMM-yyyy' }}</td>
+              <td>{{ transaction.scheme }}</td>
+              <td>{{ transaction.type }}</td>
+              <td>{{ transaction.units | number:'1.3-3' }}</td>
+              <td>₹{{ transaction.nav | number:'1.4-4' }}</td>
+              <td class="amount">₹{{ transaction.amount | number:'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="pagination">
+  <button (click)="goToPage(1)" [disabled]="currentPage === 1">First</button>
+  <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+  <span>Page {{ currentPage }} of {{ totalPages() }}</span>
+  <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages()">Next</button>
+  <button (click)="goToPage(totalPages())" [disabled]="currentPage === totalPages()">Last</button>
+</div>
+<!-- 
+<div class="bonds-section">
+  <div class="bonds-header">
+    <h2>Bond Investments</h2>
+    <button class="export-btn" (click)="exportToExcel()">
+      <span class="download-icon">⬇️</span> Export Excel
+    </button>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="bonds-table">
+      <thead>
+        <tr>
+          <th>Transaction Date</th>
+          <th>Fixed Income Name</th>
+          <th>Transaction Type</th>
+          <th>Price</th>
+          <th>Units (Credit/Debit)</th>
+          <th>Balance Units</th>
+          <th>Interest Rate (% p.a)</th>
+          <th>Interest</th>
+          <th>Amount (Credit/Debit)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bond of bondTransactions">
+          <td>{{ bond.transactionDate }}</td>
+          <td>{{ bond.fixedIncomeName }}</td>
+          <td>{{ bond.transactionType }}</td>
+          <td>{{ bond.price }}</td>
+          <td>{{ bond.units }}</td>
+          <td>{{ bond.balanceUnits }}</td>
+          <td>{{ bond.interestRate }}%</td>
+          <td>{{ bond.interest }}</td>
+          <td>{{ bond.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import * as XLSX from 'xlsx';
+
+interface StockTransaction {
+  date: Date;
+  time: string;
+  symbol: string;
+  type: string;
+  quantity: number;
+  exchange: string;
+  price: number;
+  amount: number;
+}
+
+interface BondTransaction {
+  date: Date;
+  name: string;
+  isin: string;
+  type: string;
+  price: number;
+  units:number;
+  InterestRate: number;
+  quantity: number;
+  faceValue: number;
+  amount: number;
+}
+
+interface MutualFundTransaction {
+  date: Date;
+  scheme: string;
+  folio: string;
+  type: string;
+  units: number;
+  nav: number;
+  amount: number;
+}
+
+@Component({
+  selector: 'app-onein3',
+  templateUrl: './onein3.component.html',
+  styleUrls: ['./onein3.component.css']
+})
+export class Onein3Component implements OnInit {
+   //pagination
+   currentPage: number = 1;
+   itemsPerPage: number = 5;
+   totalItems: number = 0;
+  // Filter controls
+  fromDate: string = '';
+  toDate: string = '';
+  selectedType: string = 'all';
+  searchQuery: string = '';
+  
+  // Table tabs
+  tabs = [
+    { id: 'stocks', label: 'Stocks' },
+    { id: 'bonds', label: 'Bonds' },
+    { id: 'mutual-funds', label: 'Mutual Funds' }
+  ];
+  activeTab: string = 'stocks';
+  
+  // Sample data - replace with your actual data
+  stocksData: StockTransaction[] = [
+    { date: new Date('2023-01-15'),time:'03:45 PM', symbol: 'RELIANCE', type: 'Buy', quantity: 10,exchange:'BSE' ,price: 2456.75, amount: 24567.50 },
+    { date: new Date('2023-02-20'),time:'04:45 PM ', symbol: 'TCS', type: 'Buy', quantity: 5, exchange:'BSE' ,price: 3345.60, amount: 16728.00 },
+    { date: new Date('2023-03-10'), time:'01:45 PM',symbol: 'HDFCBANK', type: 'Sell', quantity: 8, exchange:'BSE' , price: 1520.25, amount: 12162.00 },
+    { date: new Date('2023-01-15'),time:'03:45 PM', symbol: 'RELIANCE', type: 'Buy', quantity: 10,exchange:'BSE' ,price: 2456.75, amount: 24567.50 },
+    { date: new Date('2023-02-20'),time:'04:45 PM ', symbol: 'TCS', type: 'Buy', quantity: 5, exchange:'BSE' ,price: 3345.60, amount: 16728.00 },
+    { date: new Date('2023-03-10'), time:'01:45 PM',symbol: 'HDFCBANK', type: 'Sell', quantity: 8, exchange:'BSE' , price: 1520.25, amount: 12162.00 }
+  ];
+  
+  bondsData: BondTransaction[] = [
+    { date: new Date('2023-01-05'), name: 'GOVT 7.25% 2033', isin: 'IN0020001234', type: 'Buy', price: 100,units:10, InterestRate: 7.25, quantity: 50, faceValue: 1000, amount: 49250.00 },
+    { date: new Date('2023-02-15'), name: 'RELIANCE 8.5% 2028', isin: 'INE002A00025', type: 'Buy', price: 200, units:12, InterestRate: 8.5, quantity: 30, faceValue: 1000, amount: 30750.00 }
+  ];
+  
+  mutualFundsData: MutualFundTransaction[] = [
+    { date: new Date('2023-01-10'), scheme: 'Axis Bluechip Fund', folio: 'AXBLU1234', type: 'Purchase', units: 123.456, nav: 45.6789, amount: 5638.00 },
+    { date: new Date('2023-03-05'), scheme: 'SBI Small Cap Fund', folio: 'SBISM5678', type: 'Purchase', units: 89.123, nav: 125.4567, amount: 11175.00 }
+  ];
+  
+  // Sorting
+  sortColumn: string = 'date';
+  sortDirection: 'asc' | 'desc' = 'desc';
+
+  ngOnInit(): void {
+    // Initialize with default sorting
+    this.applyFilters();
+  }
+
+  // Filtered data getters
+  get filteredStocks(): StockTransaction[] {
+    //return this.applyFiltersToData([...this.stocksData], ['symbol', 'type']);
+    //pagination
+    const filteredData = this.applyFiltersToData([...this.stocksData], ['symbol', 'type', 'exchange']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  }
+
+  get filteredBonds(): BondTransaction[] {
+    // return this.applyFiltersToData([...this.bondsData], ['name', 'isin', 'type']);
+    const filteredData = this.applyFiltersToData([...this.bondsData], ['name', 'isin', 'type']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  
+  }
+
+  get filteredMutualFunds(): MutualFundTransaction[] {
+    //return this.applyFiltersToData([...this.mutualFundsData], ['scheme', 'folio', 'type']);
+    const filteredData = this.applyFiltersToData([...this.mutualFundsData], ['scheme', 'folio', 'type']);
+    this.updatePagination(filteredData.length);
+    return this.paginateData(filteredData);
+  }
+
+  private updatePagination(filteredCount: number): void {
+    this.totalItems = filteredCount;
+    // Reset to first page if current page is invalid
+    if (this.currentPage > this.totalPages() && this.currentPage > 1) {
+      this.currentPage = 1;
+    }
+  }
+
+  private paginateData<T>(data: T[]): T[] {
+    return data.slice(
+      (this.currentPage - 1) * this.itemsPerPage,
+      this.currentPage * this.itemsPerPage
+    );
+  }
+
+  private applyFiltersToData<T extends { date: Date; type: string }>(data: T[], searchFields: string[]): T[] {
+    // Date filter
+    if (this.fromDate || this.toDate) {
+      const fromDate = this.fromDate ? new Date(this.fromDate) : new Date(0);
+      const toDate = this.toDate ? new Date(this.toDate) : new Date();
+      data = data.filter(item => {
+        const itemDate = new Date(item.date);
+        return itemDate >= fromDate && itemDate <= toDate;
+      });
+    }
+
+    // Type filter
+    if (this.selectedType !== 'all') {
+      data = data.filter(item => item.type.toLowerCase() === this.selectedType);
+    }
+
+    // Search filter
+    if (this.searchQuery) {
+      const query = this.searchQuery.toLowerCase();
+      data = data.filter(item => 
+        searchFields.some(field => 
+          String((item as any)[field]).toLowerCase().includes(query)
+      ));
+    }
+
+    // Sorting
+    return this.sortData(data);
+  }
+
+  private sortData<T>(data: T[]): T[] {
+    return data.sort((a, b) => {
+      const aValue = (a as any)[this.sortColumn];
+      const bValue = (b as any)[this.sortColumn];
+
+      if (typeof aValue === 'string') {
+        return this.sortDirection === 'asc' 
+          ? aValue.localeCompare(bValue) 
+          : bValue.localeCompare(aValue);
+      } else {
+        return this.sortDirection === 'asc' 
+          ? aValue - bValue 
+          : bValue - aValue;
+      }
+    });
+  }
+
+  // Sorting handler
+  sort(column: string): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+    this.applyFilters();
+  }
+
+  getSortSymbol(column: string): string {
+    return this.sortColumn === column 
+      ? (this.sortDirection === 'asc' ? '↑' : '↓') 
+      : '';
+  }
+
+ 
+
+  // Helper to format dates consistently
+  formatDate(date: Date): string {
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  }
+
+  bondTransactions = [
+    {
+      transactionDate: '2025-04-01',
+      fixedIncomeName: 'Government Bond 2025',
+      transactionType: 'Buy',
+      price: 1000,
+      units: 5,
+      balanceUnits: 5,
+      interestRate: 7.5,
+      interest: 50,
+      amount: 5000
+    },
+    {
+      transactionDate: '2025-04-15',
+      fixedIncomeName: 'Corporate Bond X',
+      transactionType: 'Buy',
+      price: 950,
+      units: 10,
+      balanceUnits: 15,
+      interestRate: 8.2,
+      interest: 75,
+      amount: 9500
+    }
+    // Add more dummy records as needed
+  ];
+
+  
+
+// ... inside your component class ...
+
+exportStocksToExcel(): void {
+  // Prepare the worksheet
+  const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(
+    this.filteredStocks.map(stock => ({
+      Date: this.formatDateForExport(stock.date),
+      Symbol: stock.symbol,
+      Exchange: stock.exchange,
+      Type: stock.type,
+      Quantity: stock.quantity,
+      Price: `₹${stock.price.toFixed(2)}`,
+      Amount: `₹${stock.amount.toFixed(2)}`
+    }))
+  );
+
+  // Set column widths
+  ws['!cols'] = [
+    { wch: 12 }, // Date
+    { wch: 10 }, // Symbol
+    { wch: 12 }, // Exchange
+    { wch: 10 }, // Type
+    { wch: 8 },  // Quantity
+    { wch: 10 }, // Price
+    { wch: 12 }  // Amount
+  ];
+
+  // Create workbook and add worksheet
+  const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Stocks');
+
+  // Generate Excel file and download
+  XLSX.writeFile(wb, `Stocks_Transactions_${new Date().toISOString().slice(0,10)}.xlsx`);
+}
+
+private formatDateForExport(date: any): string {
+  // Convert your date format to a readable Excel date
+  const d = new Date(date);
+  return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+}
+
+
+//pagination
+
+// Pagination methods
+goToPage(page: number): void {
+  const totalPages = this.totalPages();
+  // Ensure page is within valid range
+  page = Math.max(1, Math.min(page, totalPages));
+  
+  if (page !== this.currentPage) {
+    this.currentPage = page;
+    this.applyFilters();
+  }
+}
+
+totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
+
+// Tab change handler
+switchTab(tabId: string): void {
+  this.activeTab = tabId;
+  this.currentPage = 1; // Reset to first page when switching tabs
+  this.applyFilters();
+}
+
+
+applyFilters(): void {
+  // This forces Angular to recompute the filtered data
+  this.filteredStocks;
+  this.filteredBonds;
+  this.filteredMutualFunds;
+}
+}
